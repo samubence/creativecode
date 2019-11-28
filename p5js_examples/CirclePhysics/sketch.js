@@ -62,7 +62,9 @@ function setup ()
 }
 
 function draw() 
-{
+{  
+  background(255);
+
   // iterate all elements using "a" from 0 to numOfElements
   for ( let a = 0; a < numOfElements; a++ )
   {
@@ -98,13 +100,13 @@ function draw()
         let targetDistance = mMovies[ a ].r + mMovies[ b ].r + 5; // add 5 for extra spacing
         
         // when they collide
-        if ( d < td )
+        if ( d < targetDistance )
         {
           // normalize the vector
           vx /= d;
           vy /= d;
           
-          let force = (td - d) * collisionForce;
+          let force = (targetDistance - d) * collisionForce;
           // move the circles apart
           mMovies[ a ].x += vx * force;
           mMovies[ a ].y += vy * force;
@@ -116,7 +118,6 @@ function draw()
 
     ///////////////////////////////////////////////////////////////////
     // now lets display
-    background(255);
     
     // when selected make it dark
     if ( selectedMovie == a )
@@ -133,10 +134,14 @@ function draw()
     // when selected draw the title
     if ( selectedMovie == a )
     {
-      let content = mMovies[ a ].title_eng;
+      let title = mMovies[ a ].title_eng;
+      let points = mMovies[ a ].imdb_rating.toPrecision(2);
       // get the text width for centering text
-      let w = textWidth( content );
-      noStroke(); fill(255); text( content, mMovies[ a ].x - w / 2, mMovies[ a ].y );
+      let titleWidth = textWidth( title );
+
+      noStroke(); fill(255); 
+      text( title, mMovies[ a ].x - titleWidth / 2, mMovies[ a ].y );
+      text( points, mMovies[ a ].x - 4, mMovies[ a ].y + 15 );
     }
   } 
 }
