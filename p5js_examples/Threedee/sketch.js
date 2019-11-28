@@ -15,7 +15,7 @@ function setup ()
 {
   let c = createCanvas( windowWidth, windowHeight, WEBGL );
   textFont( mFont );
-  textSize( 12 );
+  textSize( 5 );
   colorMode( HSB, 255 );
 
   // convert the database to an array
@@ -37,22 +37,33 @@ function draw()
   let votes = getDataMinMax( "votes" );
   let imdb_rating = getDataMinMax( "imdb_rating" );
 
+  let space = 300;
   for ( let i = 0; i < mMovies.length; i++ )
   {
-    let x = map( mMovies[i]["year"], year[0], year[1], -100, 100 );
-    let y = map ( mMovies[i]["votes"], votes[0], votes[1], -100, 100 );
-    let z = map( mMovies[i]["imdb_rating"], imdb_rating[0], imdb_rating[1], -100, 100 );
+    let x = map( mMovies[i]["year"], year[0], year[1], -space, space );
+    let y = map ( mMovies[i]["votes"], votes[0], votes[1], -space, space );
+    let z = map( mMovies[i]["imdb_rating"], imdb_rating[0], imdb_rating[1], -space, space );
     push();
     translate( x, y, z );
-    noStroke(); fill( 0 ); box( 2 );
-    pop();
+    noStroke(); fill( 0 ); box( 5 );
+
+/*
+    // draw title when camera is close
+    let dx = x - easycam.camEYE[0];
+    let dy = y - easycam.camEYE[1];
+    let dz = z - easycam.camEYE[2];
+    let dst = Math.sqrt( dx * dx + dy * dy + dz * dz);
+    
+    if ( dst < 200 )
+    {
+      //scale( 0.5 );
+      text( mMovies[i].title_hu, -textWidth( mMovies[i].title_hu ) / 2, 10 );
+    }
+*/
+    pop();    
+    
   }
 
-}
-
-function windowResized () 
-{
-  resizeCanvas( windowWidth, windowHeight );
 }
 
 function getDataMinMax( data )
@@ -72,4 +83,9 @@ function getDataMinMax( data )
     }    
   }
   return minmax;
+}
+
+function windowResized () 
+{
+  resizeCanvas( windowWidth, windowHeight );
 }
